@@ -35,7 +35,7 @@ export default class LogIn extends Component {
         return (
             <div>
                 <h1>Log In</h1>
-                <form>
+                <form onSubmit = {this.handleSubmit}>
                     <label>
                         Email:
                         <input
@@ -52,7 +52,9 @@ export default class LogIn extends Component {
                         />
                     </label>
                     {
-                        
+                        this.state.loading
+                            ? 'Loadering'
+                            : <button>Log In</button>
                     }
 
                 </form>
