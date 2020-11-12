@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import request from 'superagent';
 
 export default class Todos extends Component {
-  
+
   state = {
     todos: [],
     todo: '',
@@ -48,6 +48,14 @@ export default class Todos extends Component {
 
     await this.fetchTodos();
   }
+  
+  finishToDo = async (todoId) => {
+    await request
+      .put(`https://aqueous-garden-07137.herokuapp.com/api/todos/${todoId}`)
+      .set('Authorization', this.props.token);
+
+    await this.fetchTodos();
+  }
 
   render() {
     return (
@@ -69,10 +77,18 @@ export default class Todos extends Component {
             this.state.loading
               ? 'Loadering!'
               : this.state.todos.map(todo => {
-                return <li key={todo.todo}>
-                    {todo.todo}
-                    <button onClick = {this.finishToDo}>Done?
-                    </button>
+                return <li 
+                    key={todo.todo}
+                    style = {{ textDecoration: todo.completed ? 'line-through' : 'none' }}
+                  >
+                  {todo.todo}
+
+                  {
+                    todo.completed
+                      ? ''
+                      : <button onClick = {() => this.finishToDo(todo.id)}>Done?</button>
+                  }
+
                 </li>
               })
           }
